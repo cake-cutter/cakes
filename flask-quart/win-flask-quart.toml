@@ -1,0 +1,54 @@
+[metadata]
+name = "win-flask-quart"
+description = "A basic flask/quart app for windows"
+
+[[questions.which]]
+ques = "Would you like to use `Flask` or `Quart` (async flask)?"
+type = "select"
+options = ["Flask","Quart"]
+
+[filestructure]
+"src/__main__.py" = "true"
+"requirements.txt" = "true"
+"README.md" = "true"
+
+[content]
+"src/__main__.py" = """
+{{if eq (index . "which") "Flask"}}
+from flask import Flask
+{{else}}
+from quart import Quart 
+{{end}}
+
+app = {{index . "which"}}(__name__)
+
+@app.route("/")
+{{if eq (index . "which") "Quart"}}async {{end}}def hello_world():
+    return "Hi Mom"
+
+app.run()
+"""
+"requirements.txt" = """
+{{if eq (index . "which") "Flask"}}
+Flask
+{{else}}
+quart
+{{end}}
+"""
+"README.md" = """
+# Basic {{index . "which"}} app created using [cakecutter](https://cakes.run/)
+
+To run the app activate the virtual environment
+```
+env/Scripts/activate
+```
+and run
+```
+python src
+```
+"""
+
+[commands]
+"python -m venv env" = "true"
+"env/Scripts/pip3 install -r requirements.txt" = "true"
+
