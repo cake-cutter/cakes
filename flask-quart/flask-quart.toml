@@ -51,4 +51,6 @@ python src
 [commands]
 "python -m venv env" = "true"
 "env/bin/pip3 install -r requirements.txt" = "true"
-
+"git init" = "true"
+"git add ." = "true"
+"git commit -m 'Initial app created using cakecutter' " = "true"

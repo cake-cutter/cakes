@@ -44,3 +44,6 @@ SOFTWARE.
 
 [commands]
 "python -m venv env" = 'true'
+"git init" = "true"
+"git add ." = "true"
+"git commit -m 'Initial app created using cakecutter' " = "true"
