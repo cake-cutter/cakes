@@ -17,6 +17,11 @@ type = "input" # This can be input | menu | select
 ques = "What is your name?"
 default = "John Doe"
 
+[[questions.os]]
+type = "select"
+ques = "Which operating system are you in?"
+options = ["Windows","Mac/Linux"]
+
 [content]
 "LICENSE" = """
 MIT License
@@ -43,7 +48,20 @@ SOFTWARE.
 """
 
 [commands]
-"python -m venv env" = 'true'
+"python -m venv env" = '''
+{{if eq (index . "os") "Windows"}}
+  true
+{{else}}
+  false
+{{end}}
+'''
+"python3 -m venv env" = '''
+{{if eq (index . "os") "Windows"}}
+  false
+{{else}}
+  true
+{{end}}
+'''
 "git init" = "true"
 "git add ." = "true"
-"git commit -m 'Initial app created using cakecutter' " = "true"
+"git commit -m 'Initial app created using cakecutter'" = "true"

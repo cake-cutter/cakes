@@ -7,6 +7,10 @@ ques = "Would you like to use `Flask` or `Quart` (async flask)?"
 type = "select"
 options = ["Flask","Quart"]
 
+[[questions.os]]
+ques = "Which operating system are you currently in?"
+options = ["Windows","Mac/Linux"]
+
 [filestructure]
 "src/__main__.py" = "true"
 "requirements.txt" = "true"
@@ -49,7 +53,18 @@ python src
 """
 
 [commands]
-"python -m venv env" = "true"
+"python -m venv env" = '''
+{{if eq (index . "os") "Windows"}}
+  true
+{{end}}
+'''
+"python3 -m venv env" = '''
+{{if eq (index . "os") "Windows"}}
+  false
+{{else}}
+  true
+{{end}}
+'''
 "env/bin/pip3 install -r requirements.txt" = "true"
 "git init" = "true"
 "git add ." = "true"
