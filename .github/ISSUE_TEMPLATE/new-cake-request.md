@@ -15,6 +15,8 @@ body:
         label: Which language/Framework
         description: Which language/framework is this cake based on?
         placeholder: ex. Python - Flask or Javascript - React
+    validations:
+      required: true
 ---
 
 
