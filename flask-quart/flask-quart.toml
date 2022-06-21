@@ -7,10 +7,6 @@ ques = "Would you like to use `Flask` or `Quart` (async flask)?"
 type = "select"
 options = ["Flask","Quart"]
 
-[[questions.os]]
-ques = "Which operating system are you currently in?"
-options = ["Windows","Mac/Linux"]
-
 [filestructure]
 "src/__main__.py" = "true"
 "requirements.txt" = "true"
@@ -18,54 +14,83 @@ options = ["Windows","Mac/Linux"]
 
 [content]
 "src/__main__.py" = """
-{{if eq (index . "which") "Flask"}}
+{{if eq (index .Ans "which") "Flask"}}
 from flask import Flask
 {{else}}
 from quart import Quart 
 {{end}}
-
-app = {{index . "which"}}(__name__)
+app = {{index .Ans "which"}}(__name__)
 
 @app.route("/")
-{{if eq (index . "which") "Quart"}}async {{end}}def hello_world():
+{{if eq (index .Ans "which") "Quart"}}async {{end}}def hello_world():
     return "Hi Mom"
 
 app.run()
 """
 "requirements.txt" = """
-{{if eq (index . "which") "Flask"}}
+{{if eq (index .Ans "which") "Flask"}}
 Flask
 {{else}}
 quart
 {{end}}
 """
 "README.md" = """
-# Basic {{index . "which"}} app created using [cakecutter](https://cakes.run/)
+# Basic {{index .Ans "which"}} app created using [cakecutter](https://cakes.run/)
 
 To run the app activate the virtual environment
 ```
-env/bin/activate
+{{if eq .Os "windows"}}env/Scripts/activate{{else}}env/bin/activate{{end}}
 ```
 and run
 ```
-python src
+{{if eq .Os "windows"}}python{{else}}python3{{end}} src
 ```
 """
 
-[commands]
-"python -m venv env" = '''
-{{if eq (index . "os") "Windows"}}
-  true
-{{end}}
-'''
-"python3 -m venv env" = '''
-{{if eq (index . "os") "Windows"}}
-  false
-{{else}}
-  true
-{{end}}
-'''
-"env/bin/pip3 install -r requirements.txt" = "true"
-"git init" = "true"
-"git add ." = "true"
-"git commit -m 'Initial app created using cakecutter' " = "true"
+[toppings]
+1 = [
+  "python -m venv env",
+  '''
+  {{if eq .Os "windows"}}
+    true
+  {{end}}
+  '''
+]
+2 = [
+  "python3 -m venv env",
+  '''
+  {{if eq .Os "windows"}}
+    false
+  {{else}}
+    true
+  {{end}}
+  '''
+]
+3 = [
+  "env/Scripts/pip3 install -r requirements.txt",
+  '''
+  {{if eq .Os "windows"}}
+    true
+  {{end}}
+  '''
+]
+4 = [
+  "env/bin/pip3 install -r requirements.txt",
+  '''
+  {{if eq .Os "windows"}}
+    false
+  {{else}}
+    true
+  {{end}}
+  '''
+]
+5 = [
+  "git init", "true"
+]
+6 = [
+  "git add .", "true"
+]
+7 = [
+  "git commit -m 'Initial app created using cakecutter'",
+  "true"
+]

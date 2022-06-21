@@ -17,16 +17,11 @@ type = "input" # This can be input | menu | select
 ques = "What is your name?"
 default = "John Doe"
 
-[[questions.os]]
-type = "select"
-ques = "Which operating system are you in?"
-options = ["Windows","Mac/Linux"]
-
 [content]
 "LICENSE" = """
 MIT License
-
-Copyright (c) 2022 {{index . "name"}}
+{{.Os}}
+Copyright (c) 2022 {{index .Ans "name"}}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -47,21 +42,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-[commands]
-"python -m venv env" = '''
-{{if eq (index . "os") "Windows"}}
-  true
-{{else}}
-  false
-{{end}}
-'''
-"python3 -m venv env" = '''
-{{if eq (index . "os") "Windows"}}
-  false
-{{else}}
-  true
-{{end}}
-'''
-"git init" = "true"
-"git add ." = "true"
-"git commit -m 'Initial app created using cakecutter'" = "true"
+[toppings]
+1 = [
+  "python -m venv env",
+  '''
+  {{if eq .Os "windows"}}
+    true
+  {{else}}
+    false
+  {{end}}
+  '''
+]
+2 = [
+  "python3 -m venv env",
+  '''
+  {{if eq .Os "windows"}}
+    false
+  {{else}}
+    true
+  {{end}}
+  '''
+]
+3 = [
+  "git init", "true"
+]
+4 = [
+  "git add .", "true"
+]
+5 = [
+  "git commit -m 'Initial app created using cakecutter'","true"
+]
